@@ -1,4 +1,5 @@
-import { extendTheme } from "@chakra-ui/react"
+import { extendTheme } from "@chakra-ui/react";
+import { Button } from "../components/Button.tsx";
 
 // 2. Call `extendTheme` and pass your custom values
 export const theme = extendTheme({
@@ -9,4 +10,7 @@ export const theme = extendTheme({
       900: "#1a202c",
     },
   },
-})
+  components: {
+      Button,
+  }
+});
