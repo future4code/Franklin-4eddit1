@@ -10,9 +10,23 @@ import {
 import { ChatIcon } from '@chakra-ui/icons';
 import { TbArrowBigTop, TbArrowBigDown } from 'react-icons/tb';
 import { useDisclosure } from '@chakra-ui/react';
+import axios from 'axios';
+import { useState } from 'react';
+
 export const Card = ({ Texto, Autor }) => {
   const { isOpen, onToggle } = useDisclosure();
 
+  const sendComment = () => {
+    alert(`Comentário: ${comentario} Autor do post: ${Autor}`) // substituir por uma requisição axios enviando o comentário
+    onToggle()
+    setComentario('')
+
+  }
+  const [comentario, setComentario] = useState('')
+
+  const handleComentario = (event) => {
+    setComentario(event.target.value)
+  }
   return (
     <>
       <Box
@@ -67,8 +81,11 @@ export const Card = ({ Texto, Autor }) => {
               height={'100px'}
               width={'300px'}
               style={{ resize: 'none' }}
+              value={comentario}
+              onChange={handleComentario}
+              isRequired
             />
-            <Button variant={'solid'}>Responder</Button>
+            <Button variant={'solid'} onClick={() => sendComment()} >Responder</Button>
             <Divider mb={'16px'} />
           </Fade>
         </Box>
