@@ -3,7 +3,11 @@ import React from 'react';
 import { Card } from '../../components/Card';
 import Header from '../../components/Header';
 //import { InputStyled } from "./styled";
-export default function LoginPage() {
+import useRequestData from '../../hooks/UseRequestData';
+
+export default function HomePage() {
+  const [post, setPosts, isLoading] = useRequestData();
+
   return (
     <>
       <Header />
@@ -20,15 +24,21 @@ export default function LoginPage() {
         />
         <Button variant={'solid'}>Postar</Button>
         <Divider mb={'16px'} />
-        <Card Autor={'José'} Texto={'Blablablablablablablabla'} />
-        <Card
-          Autor={'Maria'}
-          Texto={
-            'BlablablablablablablablaBlablablablablablablablaBlablablablablablablablaBlablablablablablablablaBlablablablablablablablaBlablablablablabla'
-          }
-        />
-        <Card Autor={'João'} Texto={'Blablablablablablablabla'} />
-        <Card Autor={'Alberto'} Texto={'Blablablablablablablabla'} />
+
+        {isLoading && <p>Carregando</p>}
+        {!isLoading &&
+          post &&
+          post.length >= 0 &&
+          post.map((post) => {
+            return (
+              <Card
+                Autor={post.username}
+                Texto={post.body}
+                CountComentarios={post.commentCount}
+                Curtidas={post.voteSum}
+              />
+            );
+          })}
       </Flex>
     </>
   );
