@@ -28,7 +28,7 @@ export default function HomePage() {
       clear()
       goToHome(navigate)
     })
-    .cath((err)=>alert("Erro no Login"))
+    .catch((err)=>alert("Erro no Login"))
 
   }
 
@@ -42,8 +42,8 @@ export default function HomePage() {
         </Flex>
         <form onSubmit={onSubmitForm}>
           <Box>
-            <Input name={"email"} value={form.email} onChange={onChange} required type={"email"} placeholder="Nome" p={"20px 15px"} mb={"10px"} />
-            <Input name={"password"} value={form.password} onChange={onChange} required type={"password"} placeholder="Senha" p={"20px 15px"} mb={"20px"} />
+            <Input label={"email"} name={"email"} value={form.email} onChange={onChange} required type={"email"} placeholder="Nome" p={"20px 15px"} mb={"10px"} />
+            <Input label={"senha"} name={"password"} value={form.password} onChange={onChange} required type={"password"} placeholder="Senha" p={"20px 15px"} mb={"20px"} />
           </Box>
           <Button type={"submit"} variant={"solid"}>Continuar</Button>
         </form>
