@@ -12,7 +12,7 @@ import { TbArrowBigTop, TbArrowBigDown } from "react-icons/tb";
 import { useDisclosure } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
-import useRequestData from "../hooks/useRequestData";
+import useRequestData from "../hooks/UseRequestData";
 import { BASE_URL } from "../constants/urls";
 import { CardComments } from "./CardComments";
 

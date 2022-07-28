@@ -1,11 +1,13 @@
-import { Button, Divider, Flex, Textarea } from '@chakra-ui/react';
+import { Button, Divider, Flex, Progress, Textarea } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '../../components/Card';
 import Header from '../../components/Header';
+import { Loading } from '../../components/Loading';
 //import { InputStyled } from "./styled";
-import useRequestData from '../../hooks/useRequestData';
+import useRequestData from '../../hooks/UseRequestData';
 import { goToLogin } from '../../Routes/cordinator';
+
 
 export default function HomePage() {
   const [post, setPosts, isLoading] = useRequestData();
@@ -35,15 +37,12 @@ export default function HomePage() {
         />
         <Button variant={'solid'}>Postar</Button>
         <Divider mb={'16px'} />
-
-        {isLoading && <p>Carregando</p>}
+        {post?<p></p>: <Loading type={'spinningBubbles'} color={'#F79265'} /> }
+    
         {!isLoading &&
           post &&
           post.length >= 0 &&
           post.map((post) => {
-              console.log("#######################");
-              console.log(post)
-              console.log("#######################");
             return (
               <Card
                 Autor={post.username}
