@@ -4,12 +4,12 @@ Site construido consumindo os dados da api https://documenter.getpostman.com/vie
 
 ## Funcionalidades
 
-- criar conta;
-- logar;
-- ver publicações;
-- criar novas publicações;
-- ver os comentários;
-- adicionar comentários;
+- criar conta,
+- logar,
+- ver publicações,
+- criar novas publicações,
+- ver os comentários,
+- adicionar comentários.
 
 ## Link Surge
 
