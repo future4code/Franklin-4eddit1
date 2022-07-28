@@ -4,23 +4,54 @@ import { useNavigate } from 'react-router-dom';
 import { Card } from '../../components/Card';
 import Header from '../../components/Header';
 import { Loading } from '../../components/Loading';
-//import { InputStyled } from "./styled";
 import useRequestData from '../../hooks/UseRequestData';
 import { goToLogin } from '../../Routes/cordinator';
-
+import useForm from '../../hooks/useForm';
+import axios from 'axios';
+import { BASE_URL } from '../../constants/urls';
 
 export default function HomePage() {
-  const [post, setPosts, isLoading] = useRequestData();
-  const token = localStorage.getItem('token')
-  const navigate = useNavigate()
+  const [post, setPosts] = useRequestData();
+
+  const [form, onChange] = useForm({
+    title: 'Oi',
+    body: '',
+  });
+
+  const onSubmitPost = (e) => {
+    e.preventDefault();
+    sendPost(form);
+    console.log(form);
+  };
+  useEffect(() => {}, [post]);
+
+  const sendPost = (body) => {
+    const token = localStorage.getItem('token');
+    axios
+      .post(`${BASE_URL}/posts`, body, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
+      .then((r) => {
+        window.location.reload(true);
+        //setPosts([...post, r.data]);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const token = localStorage.getItem('token');
+  const navigate = useNavigate();
   const validation = () => {
     if (!token) {
-      goToLogin(navigate)
+      goToLogin(navigate);
     }
-  }
+  };
 
-  useEffect(validation, [token, navigate])
-  console.log(post);
+  useEffect(validation, [token, navigate]);
   return (
     <>
       <Header typeButton={'logout'} />
@@ -29,18 +60,25 @@ export default function HomePage() {
         align={'center'}
         p={'20px 35px 10px 35px;'}
       >
-        <Textarea
-          placeholder="Escreva seu post..."
-          variant={'filled'}
-          height={'131px'}
-          style={{ resize: 'none' }}
-        />
-        <Button variant={'solid'}>Postar</Button>
+        <form onSubmit={onSubmitPost}>
+          <Textarea
+            placeholder="Escreva seu post..."
+            variant={'filled'}
+            name={'body'}
+            type={'body'}
+            height={'131px'}
+            value={form.body}
+            style={{ resize: 'none' }}
+            onChange={onChange}
+          />
+          <Button variant={'solid'} type={'submit'}>
+            Postar
+          </Button>
+        </form>
         <Divider mb={'16px'} />
-        {post ? <p></p> : <Loading type={'spinningBubbles'} color={'#F79265'} />}
+        {post ? null : <Loading type={'spinningBubbles'} color={'#F79265'} />}
 
-        {!isLoading &&
-          post &&
+        {post &&
           post.length >= 0 &&
           post.map((post) => {
             return (
