@@ -7,12 +7,13 @@ import {
   Button,
   Divider,
 } from "@chakra-ui/react";
+import Loading from "react-loading";
 import { ChatIcon } from "@chakra-ui/icons";
 import { TbArrowBigTop, TbArrowBigDown } from "react-icons/tb";
 import { useDisclosure } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
-import useRequestData from "../hooks/useRequestData";
+import useRequestData from "../hooks/UseRequestData";
 import { BASE_URL } from "../constants/urls";
 import { CardComments } from "./CardComments";
 
@@ -101,6 +102,7 @@ export const Card = ({ Texto, Autor, CountComentarios, Curtidas, id }) => {
         <Box>
           <Fade in={isOpen}>
             <Flex direction={'column'} align={'flex-start'}>
+            {data ? <p></p> : <Loading type={'bubbles'} color={'#F79265'} />}
             {data &&
               data.map((post) => {
                 return <CardComments Autor={post.username} Texto={post.body} />;

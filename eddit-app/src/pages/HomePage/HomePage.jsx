@@ -3,25 +3,27 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '../../components/Card';
 import Header from '../../components/Header';
+import { Loading } from '../../components/Loading';
 //import { InputStyled } from "./styled";
-import useRequestData from '../../hooks/useRequestData';
+import useRequestData from '../../hooks/UseRequestData';
 import { goToLogin } from '../../Routes/cordinator';
+
 
 export default function HomePage() {
   const [post, setPosts, isLoading] = useRequestData();
   const token = localStorage.getItem('token')
   const navigate = useNavigate()
   const validation = () => {
-      if(!token){
-          goToLogin(navigate)
-      }
+    if (!token) {
+      goToLogin(navigate)
+    }
   }
 
   useEffect(validation, [token, navigate])
   console.log(post);
   return (
     <>
-      <Header typeButton={'logout'}/>
+      <Header typeButton={'logout'} />
       <Flex
         flexDirection={'column'}
         align={'center'}
@@ -35,15 +37,12 @@ export default function HomePage() {
         />
         <Button variant={'solid'}>Postar</Button>
         <Divider mb={'16px'} />
+        {post ? <p></p> : <Loading type={'spinningBubbles'} color={'#F79265'} />}
 
-        {isLoading && <p>Carregando</p>}
         {!isLoading &&
           post &&
           post.length >= 0 &&
           post.map((post) => {
-              console.log("#######################");
-              console.log(post)
-              console.log("#######################");
             return (
               <Card
                 Autor={post.username}
