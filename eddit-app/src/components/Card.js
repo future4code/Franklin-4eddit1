@@ -13,20 +13,19 @@ import { useDisclosure } from '@chakra-ui/react';
 import axios from 'axios';
 import { useState } from 'react';
 
-export const Card = ({ Texto, Autor }) => {
+export const Card = ({ Texto, Autor, CountComentarios, Curtidas }) => {
   const { isOpen, onToggle } = useDisclosure();
 
   const sendComment = () => {
-    alert(`Comentário: ${comentario} Autor do post: ${Autor}`) // substituir por uma requisição axios enviando o comentário
-    onToggle()
-    setComentario('')
-
-  }
-  const [comentario, setComentario] = useState('')
+    alert(`Comentário: ${comentario} Autor do post: ${Autor}`); // substituir por uma requisição axios enviando o comentário
+    onToggle();
+    setComentario('');
+  };
+  const [comentario, setComentario] = useState('');
 
   const handleComentario = (event) => {
-    setComentario(event.target.value)
-  }
+    setComentario(event.target.value);
+  };
   return (
     <>
       <Box
@@ -55,7 +54,7 @@ export const Card = ({ Texto, Autor }) => {
               <div>
                 <TbArrowBigTop style={{ margin: '0 10px', fontSize: '20px' }} />
               </div>
-              <Text>1.2K</Text>
+              <Text>{Curtidas}</Text>
               <TbArrowBigDown style={{ margin: '0 10px', fontSize: '20px' }} />
             </Flex>
 
@@ -66,7 +65,7 @@ export const Card = ({ Texto, Autor }) => {
               mr={'15px'}
             >
               <ChatIcon m={'5px'} cursor={'pointer'} onClick={onToggle} />
-              <Text mr={'5px'}>150</Text>
+              <Text mr={'5px'}>{CountComentarios}</Text>
             </Flex>
           </Flex>
         </Flex>
@@ -85,7 +84,9 @@ export const Card = ({ Texto, Autor }) => {
               onChange={handleComentario}
               isRequired
             />
-            <Button variant={'solid'} onClick={() => sendComment()} >Responder</Button>
+            <Button variant={'solid'} onClick={() => sendComment()}>
+              Responder
+            </Button>
             <Divider mb={'16px'} />
           </Fade>
         </Box>
