@@ -3,16 +3,16 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { BASE_URL } from '../constants/urls';
 
-const useRequestData = () => {
+const useRequestData = (endpoint = '') => {
   const [data, setData] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
-
+  const token = localStorage.getItem('token')
+  console.log(token);
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/posts`, {
+      .get(`${BASE_URL}/posts/${endpoint}`, {
         headers: {
-          Authorization:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE0NWY2ZDdmLWJlNDQtNDk3ZS05NGVlLTc1OTY3M2NhNWQxNiIsInJvbGUiOiJHVUVTVCIsImlhdCI6MTY1ODg0MDM1MiwiZXhwIjoxNjU4ODgzNTUyfQ.IrP_7QFRAFSQ60urKPG3ThrTtrf-ee8tEpljzxgZqEc',
+          Authorization: token
         },
       })
       .then((res) => {

@@ -6,66 +6,93 @@ import {
   Textarea,
   Button,
   Divider,
-} from '@chakra-ui/react';
-import { ChatIcon } from '@chakra-ui/icons';
-import { TbArrowBigTop, TbArrowBigDown } from 'react-icons/tb';
-import { useDisclosure } from '@chakra-ui/react';
-import axios from 'axios';
-import { useState } from 'react';
+} from "@chakra-ui/react";
+import { ChatIcon } from "@chakra-ui/icons";
+import { TbArrowBigTop, TbArrowBigDown } from "react-icons/tb";
+import { useDisclosure } from "@chakra-ui/react";
+import axios from "axios";
+import { useState } from "react";
+import useRequestData from "../hooks/useRequestData";
+import { BASE_URL } from "../constants/urls";
+import { CardComments } from "./CardComments";
 
-export const Card = ({ Texto, Autor, CountComentarios, Curtidas }) => {
+export const Card = ({ Texto, Autor, CountComentarios, Curtidas, id }) => {
   const { isOpen, onToggle } = useDisclosure();
+  const token = localStorage.getItem("token");
+  const [data, setData] = useState();
 
   const sendComment = () => {
     alert(`Comentário: ${comentario} Autor do post: ${Autor}`); // substituir por uma requisição axios enviando o comentário
     onToggle();
-    setComentario('');
+    setComentario("");
   };
-  const [comentario, setComentario] = useState('');
+  const [comentario, setComentario] = useState("");
 
   const handleComentario = (event) => {
     setComentario(event.target.value);
   };
+
+  const openComments = (id) => {
+    onToggle();
+    if (!isOpen) {
+      axios
+        .get(`${BASE_URL}/posts/${id}/comments`, {
+          headers: {
+            Authorization: token,
+          },
+        })
+        .then((res) => {
+          setData(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
   return (
     <>
       <Box
-        bg={'#FBFBFB'}
-        border={'1px solid #E0E0E0'}
-        w={'100%'}
-        borderRadius={'12px'}
-        m={'8px 15px 8px 15px'}
+        bg={"#FBFBFB"}
+        border={"1px solid #E0E0E0"}
+        w={"100%"}
+        borderRadius={"12px"}
+        m={"8px 15px 8px 15px"}
       >
         <Flex
-          flexDirection={'column'}
-          align={'flex-start'}
-          p={'10px 35px 10px 20px'}
+          flexDirection={"column"}
+          align={"flex-start"}
+          p={"10px 35px 10px 20px"}
         >
-          <Text color={'#6F6F6F'}>Enviado por: {Autor}</Text>
-          <Text padding={'10px 0px 10px 0px'} wordBreak={'break-word'}>
+          <Text color={"#6F6F6F"}>Enviado por: {Autor}</Text>
+          <Text padding={"10px 0px 10px 0px"} wordBreak={"break-word"}>
             {Texto}
           </Text>
-          <Flex color={'#6F6F6F'} marginBottom={'3px'}>
+          <Flex color={"#6F6F6F"} marginBottom={"3px"}>
             <Flex
-              alignItems={'center'}
-              border={'1px solid #e6e6e6'}
-              borderRadius={'10px'}
-              mr={'15px'}
+              alignItems={"center"}
+              border={"1px solid #e6e6e6"}
+              borderRadius={"10px"}
+              mr={"15px"}
             >
               <div>
-                <TbArrowBigTop style={{ margin: '0 10px', fontSize: '20px' }} />
+                <TbArrowBigTop style={{ margin: "0 10px", fontSize: "20px" }} />
               </div>
               <Text>{Curtidas}</Text>
-              <TbArrowBigDown style={{ margin: '0 10px', fontSize: '20px' }} />
+              <TbArrowBigDown style={{ margin: "0 10px", fontSize: "20px" }} />
             </Flex>
 
             <Flex
-              alignItems={'center'}
-              border={'1px solid #e6e6e6'}
-              borderRadius={'10px'}
-              mr={'15px'}
+              alignItems={"center"}
+              border={"1px solid #e6e6e6"}
+              borderRadius={"10px"}
+              mr={"15px"}
             >
-              <ChatIcon m={'5px'} cursor={'pointer'} onClick={onToggle} />
-              <Text mr={'5px'}>{CountComentarios}</Text>
+              <ChatIcon
+                m={"5px"}
+                cursor={"pointer"}
+                onClick={() => openComments(id)}
+              />
+              <Text mr={"5px"}>{CountComentarios}</Text>
             </Flex>
           </Flex>
         </Flex>
@@ -73,21 +100,27 @@ export const Card = ({ Texto, Autor, CountComentarios, Curtidas }) => {
       {isOpen === true ? (
         <Box>
           <Fade in={isOpen}>
+            <Flex direction={'column'} align={'flex-start'}>
+            {data &&
+              data.map((post) => {
+                return <CardComments Autor={post.username} Texto={post.body} />;
+              })}
+              </Flex>
             <Textarea
               placeholder="Adicionar comentário"
-              variant={'filled'}
-              marginTop={'8px'}
-              height={'100px'}
-              width={'300px'}
-              style={{ resize: 'none' }}
+              variant={"filled"}
+              marginTop={"8px"}
+              height={"100px"}
+              width={"100%"}
+              style={{ resize: "none" }}
               value={comentario}
               onChange={handleComentario}
               isRequired
             />
-            <Button variant={'solid'} onClick={() => sendComment()}>
+            <Button variant={"solid"} onClick={() => sendComment()}>
               Responder
             </Button>
-            <Divider mb={'16px'} />
+            <Divider mb={"16px"} />
           </Fade>
         </Box>
       ) : null}

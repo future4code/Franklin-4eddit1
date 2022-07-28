@@ -13,7 +13,6 @@ export default function SignupPage() {
 
     const onSubmitForm = (e) => {
         e.preventDefault()
-        console.log(form)
 
         handleLogin(form, clear, navigate)
     }
@@ -31,7 +30,7 @@ export default function SignupPage() {
     }
   return (
     <>
-      <Header />
+      <Header typeButton={'entrar'}/>
       <form onSubmit={onSubmitForm}>
       <Flex flexDirection={'column'} p={"0 32px"} mt={"30px"}>
         <Text fontSize={"4xl"} fontWeight={"700"}>
