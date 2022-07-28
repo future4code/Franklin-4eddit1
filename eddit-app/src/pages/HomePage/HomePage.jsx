@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, Progress, Textarea } from '@chakra-ui/react';
+import { Button, Divider, Flex, Textarea } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '../../components/Card';
@@ -14,16 +14,16 @@ export default function HomePage() {
   const token = localStorage.getItem('token')
   const navigate = useNavigate()
   const validation = () => {
-      if(!token){
-          goToLogin(navigate)
-      }
+    if (!token) {
+      goToLogin(navigate)
+    }
   }
 
   useEffect(validation, [token, navigate])
   console.log(post);
   return (
     <>
-      <Header typeButton={'logout'}/>
+      <Header typeButton={'logout'} />
       <Flex
         flexDirection={'column'}
         align={'center'}
@@ -37,8 +37,8 @@ export default function HomePage() {
         />
         <Button variant={'solid'}>Postar</Button>
         <Divider mb={'16px'} />
-        {post?<p></p>: <Loading type={'spinningBubbles'} color={'#F79265'} /> }
-    
+        {post ? <p></p> : <Loading type={'spinningBubbles'} color={'#F79265'} />}
+
         {!isLoading &&
           post &&
           post.length >= 0 &&
