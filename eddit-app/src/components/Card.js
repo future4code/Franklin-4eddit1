@@ -20,6 +20,61 @@ export const Card = ({ Texto, Autor, CountComentarios, Curtidas, id }) => {
   const { isOpen, onToggle } = useDisclosure();
   const token = localStorage.getItem('token');
   const [data, setData] = useState();
+  const [vote, setVote] = useState(Number(Curtidas))
+  const [isVoted, setIsVoted] = useState(false)
+  const voteRequest = (direction) => {
+    axios.post(`${BASE_URL}/posts/${id}/votes`, {"direction": direction }, {
+      headers: {
+        Authorization: token,
+      },
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
+  const removeVoteRequest = (direction) => {
+
+    axios.put(`${BASE_URL}/posts/${id}/votes`, {"direction": direction }, {
+      headers: {
+        Authorization: token,
+      },
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
+  const voteFunc = (positive = true) => {
+    if(positive){
+      if(isVoted){
+        setVote(vote - 1)
+        setIsVoted(!isVoted)
+        removeVoteRequest(-1)
+      }else{
+        setVote(vote + 1)
+        setIsVoted(!isVoted)
+        voteRequest(1)
+      }
+    }else{
+      if(isVoted){
+        setVote(vote + 1)
+        setIsVoted(!isVoted)
+        voteRequest(1)
+      }else{
+        setVote(vote - 1)
+        setIsVoted(!isVoted)
+        removeVoteRequest(-1)
+      }
+    }
+  }
+
 
   const sendComment = () => {
     alert(`Comentário: ${comentario} Autor do post: ${Autor}`); // substituir por uma requisição axios enviando o comentário
@@ -49,6 +104,8 @@ export const Card = ({ Texto, Autor, CountComentarios, Curtidas, id }) => {
         });
     }
   };
+
+
   return (
     <>
       <Box
@@ -75,10 +132,10 @@ export const Card = ({ Texto, Autor, CountComentarios, Curtidas, id }) => {
               mr={'15px'}
             >
               <div>
-                <TbArrowBigTop style={{ margin: '0 10px', fontSize: '20px' }} />
+                <TbArrowBigTop style={{ margin: '0 10px', fontSize: '20px' }} onClick={voteFunc}/>
               </div>
-              <Text>{Curtidas}</Text>
-              <TbArrowBigDown style={{ margin: '0 10px', fontSize: '20px' }} />
+              <Text>{vote}</Text>
+              <TbArrowBigDown style={{ margin: '0 10px', fontSize: '20px' }} onClick={() => voteFunc(false)}/>
             </Flex>
 
             <Flex
