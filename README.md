@@ -37,8 +37,8 @@ https://labeddit-10.surge.sh/
 
 ![Captura de Tela 2022-07-29 às 11 17 49](https://user-images.githubusercontent.com/90333256/181780622-cd38d68c-1f55-4184-a7ec-fce7e8e1bd74.png)
 
+<img width="368" alt="Captura de Tela 2022-07-31 às 16 16 50" src="https://user-images.githubusercontent.com/90333256/182041743-5512f415-ef28-4423-83c8-9d8cfd6632a0.png">
 
-![Captura de Tela 2022-07-29 às 11 18 18](https://user-images.githubusercontent.com/90333256/181780568-f99aa81b-283b-4022-a779-0c7a9c8ca104.png)
 
 
 ## Como rodar
