@@ -10,6 +10,7 @@ Site construido consumindo os dados da api https://documenter.getpostman.com/vie
 - criar novas publicações,
 - ver os comentários,
 - adicionar comentários.
+- Votar Positiva e negativamente em um post
 
 ## Link Surge
 
