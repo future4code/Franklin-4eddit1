@@ -4,7 +4,7 @@ import { TbArrowBigTop, TbArrowBigDown } from "react-icons/tb";
 import {
   removeVoteRequestComments,
   voteRequestComments,
-} from "../services/voteRequestComment";
+} from "../services/comments/voteRequestComment";
 
 export const CardComments = ({ Texto, Autor, CurtidasComentarios, id }) => {
   const [vote, setVote] = useState(Number(CurtidasComentarios));

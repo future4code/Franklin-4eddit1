@@ -3,10 +3,8 @@ import React from "react";
 import Logo from "../../assets/logo.svg";
 import useForm from "../../hooks/useForm";
 import { useNavigate } from "react-router-dom"
-import { goToSignup } from "../../Routes/cordinator"
-import axios from "axios"
-import { BASE_URL } from "../../constants/urls";
-import { goToHome } from "../../Routes/cordinator";
+import { goToSignUp } from "../../Routes/coordinator"
+import { login } from "../../services/login/login";
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -16,22 +14,6 @@ export default function HomePage() {
       event.preventDefault()
       login(form, clear, navigate)
   };
-
-  const login = (body, clear, navigate) =>{
-    axios.post(`${BASE_URL}/users/login`, body,{
-    headers: {
-      ContentType: localStorage.getItem("application/json")
-    }
-    })
-    .then((res)=>{
-      localStorage.setItem("token", res.data.token)
-      clear()
-      goToHome(navigate)
-    })
-    .catch((err)=>alert("Erro no Login"))
-
-  }
-
 
   return (
     <>
@@ -49,7 +31,7 @@ export default function HomePage() {
         </form>
         
         <Divider />
-        <Button onClick={() =>goToSignup(navigate)} variant={"outline"}>Crie uma conta!</Button>
+        <Button onClick={() =>goToSignUp(navigate)} variant={"outline"}>Crie uma conta!</Button>
       </Flex>
     </>
   );

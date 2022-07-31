@@ -5,10 +5,9 @@ import { Card } from '../../components/Card';
 import Header from '../../components/Header';
 import { Loading } from '../../components/Loading';
 import useRequestData from '../../hooks/UseRequestData';
-import { goToLogin } from '../../Routes/cordinator';
+import { goToLogin } from '../../Routes/coordinator';
 import useForm from '../../hooks/useForm';
-import axios from 'axios';
-import { BASE_URL } from '../../constants/urls';
+import { sendPost } from '../../services/posts/sendPost';
 
 export default function HomePage() {
   const [post, setPosts] = useRequestData();
@@ -24,23 +23,6 @@ export default function HomePage() {
   };
   
   useEffect(() => {}, [post]);
-
-  const sendPost = (body) => {
-    const token = localStorage.getItem('token');
-    axios
-      .post(`${BASE_URL}/posts`, body, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token,
-        },
-      })
-      .then((r) => {
-        window.location.reload(true);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
 
   const token = localStorage.getItem('token');
   const navigate = useNavigate();

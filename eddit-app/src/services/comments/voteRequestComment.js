@@ -1,9 +1,8 @@
 import axios from "axios";
-import { BASE_URL } from "../constants/urls";
+import { BASE_URL } from "../../constants/urls";
 
 export const voteRequestComments = (direction, id) => {
   const token = localStorage.getItem("token");
-  console.log(id);
   axios
     .post(
       `${BASE_URL}/comments/${id}/votes`,
@@ -24,7 +23,6 @@ export const voteRequestComments = (direction, id) => {
 
 export const removeVoteRequestComments = (direction, id) => {
   const token = localStorage.getItem("token");
-  console.log(id);
   axios
     .put(
       `${BASE_URL}/comments/${id}/votes`,

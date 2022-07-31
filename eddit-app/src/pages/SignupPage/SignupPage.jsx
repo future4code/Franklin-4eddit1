@@ -2,32 +2,18 @@ import { Flex, Text, Box, Input, Link, Checkbox, Button } from "@chakra-ui/react
 import React from "react";
 import Header from "../../components/Header";
 import useForm from "../../hooks/useForm";
-import axios from "axios";
-import { BASE_URL } from "../../constants/urls";
-import { goToHome } from "../../Routes/cordinator";
 import { useNavigate } from "react-router-dom";
+import { signUp } from "../../services/signUp/signUp";
 
-export default function SignupPage() {
+export default function SignUpPage() {
     const [form, onChange, clear] = useForm({username: "", email: "", password: ""})
     const navigate = useNavigate()
 
     const onSubmitForm = (e) => {
         e.preventDefault()
-
-        handleLogin(form, clear, navigate)
+        signUp(form, clear, navigate)
     }
 
-    const handleLogin = (body, clear, navigate) => {
-        axios.post(`${BASE_URL}/users/signup`, body, {
-            headers: {
-                ContentType: localStorage.getItem("application/json")
-            }
-        }).then((response) => {
-            localStorage.setItem("token", response.data.token)
-            clear()
-            goToHome(navigate)
-        })
-    }
   return (
     <>
       <Header typeButton={'entrar'}/>

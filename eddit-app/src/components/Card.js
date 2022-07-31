@@ -11,99 +11,63 @@ import Loading from "react-loading";
 import { ChatIcon } from "@chakra-ui/icons";
 import { TbArrowBigTop, TbArrowBigDown } from "react-icons/tb";
 import { useDisclosure } from "@chakra-ui/react";
-import axios from "axios";
 import React, { useState } from "react";
-import { BASE_URL } from "../constants/urls";
 import { CardComments } from "./CardComments";
-import { createComment } from "../services/createComment";
+import { createComment } from "../services/comments/createComment";
+import {
+  removeVoteRequest,
+  voteRequest,
+} from "../services/posts/voteRequestPost";
+import { openComments } from "../services/comments/openComments";
 
 export const Card = ({ Texto, Autor, CountComentarios, Curtidas, id }) => {
   const { isOpen, onToggle } = useDisclosure();
-  const token = localStorage.getItem("token");
   const [data, setData] = useState();
   const [vote, setVote] = useState(Number(Curtidas));
   const [comentario, setComentario] = useState("");
   const [isVotedPositive, setIsVotedPositive] = useState(false);
   const [isVotedNegative, setIsVotedNegative] = useState(false);
 
-  const voteRequest = (direction) => {
-    axios
-      .post(
-        `${BASE_URL}/posts/${id}/votes`,
-        { direction: direction },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      )
-      .then((res) => {
-        // console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const removeVoteRequest = (direction) => {
-    axios
-      .put(
-        `${BASE_URL}/posts/${id}/votes`,
-        { direction: direction },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      )
-      .then((res) => {
-        // console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const voteDeslike = (positive = true) => {
+  const voteDeslike = (positive = true, id) => {
     if (positive) {
       if (isVotedNegative) {
-        removeDeslike();
+        removeDeslike(id);
       } else {
-        isVotedPositive ? removeLike() : deslike();
+        isVotedPositive ? removeLike(id) : deslike(id);
       }
     }
   };
-  const voteLike = (positive = true) => {
+  const voteLike = (positive = true, id) => {
     if (positive) {
       if (isVotedPositive) {
-        removeLike();
+        removeLike(id);
       } else {
-        isVotedNegative ? removeDeslike() : like();
+        isVotedNegative ? removeDeslike(id) : like(id);
       }
     }
   };
-  const removeLike = () => {
+  const removeLike = (id) => {
     setIsVotedPositive(!isVotedPositive);
     setVote(vote - 1);
-    removeVoteRequest(-1);
+    removeVoteRequest(-1, id);
     // console.log("Remove Like");
   };
-  const deslike = () => {
+  const deslike = (id) => {
     setIsVotedNegative(!isVotedNegative);
     setVote(vote - 1);
-    voteRequest(-1);
+    voteRequest(-1, id);
     // console.log("Deslike");
   };
-  const removeDeslike = () => {
+  const removeDeslike = (id) => {
     setIsVotedNegative(!isVotedNegative);
     setVote(vote + 1);
-    removeVoteRequest(1);
+    removeVoteRequest(1, id);
     // console.log("Remove Deslike");
   };
-  const like = () => {
+  const like = (id) => {
     setIsVotedPositive(!isVotedPositive);
     setVote(vote + 1);
-    voteRequest(1);
+    voteRequest(1, id);
     // console.log("Like");
   };
 
@@ -115,24 +79,6 @@ export const Card = ({ Texto, Autor, CountComentarios, Curtidas, id }) => {
 
   const handleComentario = (event) => {
     setComentario(event.target.value);
-  };
-
-  const openComments = (id) => {
-    onToggle();
-    if (!isOpen) {
-      axios
-        .get(`${BASE_URL}/posts/${id}/comments`, {
-          headers: {
-            Authorization: token,
-          },
-        })
-        .then((res) => {
-          setData(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
   };
 
   return (
@@ -163,13 +109,13 @@ export const Card = ({ Texto, Autor, CountComentarios, Curtidas, id }) => {
               <div>
                 <TbArrowBigTop
                   style={{ margin: "0 10px", fontSize: "20px" }}
-                  onClick={() => voteLike(true)}
+                  onClick={() => voteLike(true, id)}
                 />
               </div>
               <Text>{vote}</Text>
               <TbArrowBigDown
                 style={{ margin: "0 10px", fontSize: "20px" }}
-                onClick={() => voteDeslike(true)}
+                onClick={() => voteDeslike(true, id)}
               />
             </Flex>
 
@@ -182,7 +128,7 @@ export const Card = ({ Texto, Autor, CountComentarios, Curtidas, id }) => {
               <ChatIcon
                 m={"5px"}
                 cursor={"pointer"}
-                onClick={() => openComments(id)}
+                onClick={() => openComments(id, onToggle, isOpen, setData)}
               />
               <Text mr={"5px"}>{CountComentarios}</Text>
             </Flex>
@@ -196,7 +142,6 @@ export const Card = ({ Texto, Autor, CountComentarios, Curtidas, id }) => {
               {data ? null : <Loading type={"bubbles"} color={"#F79265"} />}
               {data &&
                 data.map((comment) => {
-                  console.log(comment);
                   return (
                     <CardComments
                       key={comment.id}

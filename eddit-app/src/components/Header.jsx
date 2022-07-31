@@ -2,7 +2,7 @@ import { Button, Flex, Image, propNames } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../assets/logo-menor.svg';
-import { goToLogin } from '../Routes/cordinator';
+import { goToLogin } from '../Routes/coordinator';
 
 export default function Header(props) {
     const navigate = useNavigate()
