@@ -21,8 +21,8 @@ export default function HomePage() {
   const onSubmitPost = (e) => {
     e.preventDefault();
     sendPost(form);
-    console.log(form);
   };
+  
   useEffect(() => {}, [post]);
 
   const sendPost = (body) => {
@@ -36,7 +36,6 @@ export default function HomePage() {
       })
       .then((r) => {
         window.location.reload(true);
-        //setPosts([...post, r.data]);
       })
       .catch((e) => {
         console.log(e);
@@ -83,6 +82,7 @@ export default function HomePage() {
           post.map((post) => {
             return (
               <Card
+                key={post.id}
                 Autor={post.username}
                 Texto={post.body}
                 CountComentarios={post.commentCount}
